@@ -1,5 +1,18 @@
 import pygame
+import sys
 import time
+
+
+def renderizar_com_contorno(texto, fonte, cor_texto, cor_borda):
+    """Renderiza texto com contorno preto."""
+    texto_superficie = fonte.render(texto, True, cor_texto)
+    borda_superficie = fonte.render(texto, True, cor_borda)
+    largura, altura = texto_superficie.get_size()
+    superficie = pygame.Surface((largura + 4, altura + 4), pygame.SRCALPHA)  # Buffer com espaço para o contorno
+    for dx, dy in [(-2, 0), (2, 0), (0, -2), (0, 2), (-2, -2), (2, -2), (-2, 2), (2, 2)]:
+        superficie.blit(borda_superficie, (2 + dx, 2 + dy))  # Camadas do contorno
+    superficie.blit(texto_superficie, (2, 2))  # Texto principal no centro
+    return superficie
 
 
 def exibir_tela_inicial(tela: pygame.Surface) -> None:
@@ -24,30 +37,14 @@ def exibir_tela_inicial(tela: pygame.Surface) -> None:
     fonte_titulo = pygame.font.Font("recursos/fontes/title_screen.ttf", 48)  # Fonte personalizada
     fonte_instrucoes = pygame.font.Font(None, 36)  # Fonte menor para as instruções
 
-    # Função para renderizar texto com contorno
-    def renderizar_com_contorno(texto, fonte, cor_texto, cor_borda):
-        """Renderiza texto com contorno preto."""
-        texto_superficie = fonte.render(texto, True, cor_texto)
-        borda_superficie = fonte.render(texto, True, cor_borda)
-        largura, altura = texto_superficie.get_size()
-        superficie = pygame.Surface((largura + 4, altura + 4), pygame.SRCALPHA)  # Buffer com espaço para o contorno
-        for dx, dy in [(-2, 0), (2, 0), (0, -2), (0, 2), (-2, -2), (2, -2), (-2, 2), (2, 2)]:
-            superficie.blit(borda_superficie, (2 + dx, 2 + dy))  # Camadas do contorno
-        superficie.blit(texto_superficie, (2, 2))  # Texto principal no centro
-        return superficie
-
     # Elementos de texto com contorno
     titulo = renderizar_com_contorno("RUNNER'S QUEST", fonte_titulo, cor_titulo, cor_contorno)
     instrucoes = renderizar_com_contorno("Pressione ENTER para começar", fonte_instrucoes, cor_titulo, cor_contorno)
 
     # Cálculo para centralizar os textos na tela
     largura_tela, altura_tela = tela.get_size()
-
-    # Posição do título (um pouco acima do centro)
     pos_titulo_x = (largura_tela - titulo.get_width()) // 2
     pos_titulo_y = (altura_tela // 2) - 120  # Ajustado para ficar mais acima
-
-    # Posição das instruções (um pouco abaixo do centro)
     pos_instrucoes_x = (largura_tela - instrucoes.get_width()) // 2
     pos_instrucoes_y = (altura_tela // 2) + 100  # Mais abaixo da tela
 
@@ -58,11 +55,8 @@ def exibir_tela_inicial(tela: pygame.Surface) -> None:
     # Loop da tela inicial
     tela_ativa = True
     while tela_ativa:
-        # Desenhar a imagem de fundo
-        tela.blit(fundo, (0, 0))
-
-        # Exibir o título com contorno
-        tela.blit(titulo, (pos_titulo_x, pos_titulo_y))
+        tela.blit(fundo, (0, 0))  # Desenhar a imagem de fundo
+        tela.blit(titulo, (pos_titulo_x, pos_titulo_y))  # Exibir o título com contorno
 
         # Alternar a visibilidade das instruções a cada 500ms
         tempo_atual = pygame.time.get_ticks()
@@ -70,12 +64,10 @@ def exibir_tela_inicial(tela: pygame.Surface) -> None:
             instrucoes_visiveis = not instrucoes_visiveis
             tempo_ultimo_piscando = tempo_atual
 
-        # Exibir as instruções apenas se estiverem "visíveis" (com contorno)
         if instrucoes_visiveis:
-            tela.blit(instrucoes, (pos_instrucoes_x, pos_instrucoes_y))
+            tela.blit(instrucoes, (pos_instrucoes_x, pos_instrucoes_y))  # Exibir as instruções visíveis
 
-        # Atualizar o display
-        pygame.display.flip()
+        pygame.display.flip()  # Atualizar o display
 
         # Captura eventos de entrada do jogador
         for evento in pygame.event.get():
@@ -84,4 +76,57 @@ def exibir_tela_inicial(tela: pygame.Surface) -> None:
                 exit()
             if evento.type == pygame.KEYDOWN and evento.key == pygame.K_RETURN:  # Pressionar ENTER
                 pygame.mixer.music.fadeout(1000)  # Suaviza a música em 1 segundo
+                exibir_menu(tela)  # Chamar o menu principal
                 tela_ativa = False
+
+
+def exibir_menu(tela: pygame.Surface) -> None:
+    """Exibe o menu principal do jogo.
+
+    Args:
+        tela (pygame.Surface): A superfície da tela onde o menu será exibido.
+    """
+    # Configuração de cores e fontes
+    cor_texto = (255, 255, 255)  # Branco
+    cor_selecionada = (255, 255, 0)  # Amarelo para destacar a opção selecionada
+    fonte_menu = pygame.font.Font(None, 50)  # Fonte padrão
+    opcoes = ["Iniciar Jogo", "Configurações", "Créditos", "Sair"]
+
+    # Variável de controle do menu
+    menu_ativo = True
+    selecionado = 0  # Índice da opção selecionada
+
+    while menu_ativo:
+        tela.fill((0, 0, 0))  # Fundo preto
+
+        # Renderizar as opções do menu
+        for i, opcao in enumerate(opcoes):
+            cor = cor_texto if i != selecionado else cor_selecionada
+            texto = fonte_menu.render(opcao, True, cor)
+            pos_x = (tela.get_width() - texto.get_width()) // 2
+            pos_y = (tela.get_height() // 2) + i * 60  # Distância entre as opções
+            tela.blit(texto, (pos_x, pos_y))
+
+        pygame.display.flip()  # Atualizar o display
+
+        # Capturar eventos do teclado
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:  # Fechar o jogo
+                pygame.quit()
+                sys.exit()
+            if evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_UP:  # Navegar para cima
+                    selecionado = (selecionado - 1) % len(opcoes)
+                if evento.key == pygame.K_DOWN:  # Navegar para baixo
+                    selecionado = (selecionado + 1) % len(opcoes)
+                if evento.key == pygame.K_RETURN:  # Selecionar uma opção
+                    if selecionado == 0:  # Iniciar Jogo
+                        print("Iniciando o jogo...")
+                        menu_ativo = False  # Fechar o menu
+                    elif selecionado == 1:  # Configurações
+                        print("Abrindo Configurações...")
+                    elif selecionado == 2:  # Créditos
+                        print("Exibindo Créditos...")
+                    elif selecionado == 3:  # Sair
+                        pygame.quit()
+                        sys.exit()

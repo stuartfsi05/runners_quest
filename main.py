@@ -1,7 +1,7 @@
 import pygame
 from player import Player  # Certifique-se de que o player.py está configurado corretamente
 from obstaculo import Obstaculo  # Certifique-se de que o obstaculo.py está configurado corretamente
-from interface import exibir_tela_inicial  # Importa a tela inicial do arquivo interface.py
+from interface import exibir_tela_inicial, exibir_menu  # Importa a tela inicial e o menu do arquivo interface.py
 
 # Configurações do jogo
 LARGURA_TELA = 800
@@ -68,6 +68,9 @@ def main():
 
     # Exibir a tela inicial antes de iniciar o jogo
     exibir_tela_inicial(tela)
+
+    # Exibir o menu após a tela inicial
+    exibir_menu(tela)
 
     # Carregar e iniciar a música da fase 1 com transição suave
     pygame.mixer.music.load("recursos/sons/level_1.wav")  # Caminho para a música da fase 1
