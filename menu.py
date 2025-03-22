@@ -4,7 +4,7 @@ from interface import renderizar_com_contorno
 from selecao_personagem import exibir_selecao_personagem  # Importando a tela de seleção de personagens
 
 
-def exibir_menu(tela: pygame.Surface, fundo: pygame.Surface, titulo, pos_titulo_x, pos_titulo_y) -> str:
+def exibir_menu(tela: pygame.Surface, fundo: pygame.Surface, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y) -> str:
     """
     Exibe o menu principal do jogo e retorna a ação escolhida.
     """
@@ -20,7 +20,10 @@ def exibir_menu(tela: pygame.Surface, fundo: pygame.Surface, titulo, pos_titulo_
 
     while menu_ativo:
         tela.blit(fundo, (0, 0))  # Redesenha o fundo
-        tela.blit(titulo, (pos_titulo_x, pos_titulo_y))  # Exibe o título fixo no topo
+
+        # Renderiza o título do menu
+        texto_titulo = renderizar_com_contorno("Runner's Quest", fonte_titulo, cor_titulo, (0, 0, 0))
+        tela.blit(texto_titulo, (pos_titulo_x - texto_titulo.get_width() // 2, pos_titulo_y))
 
         # Renderiza as opções do menu
         for i, opcao in enumerate(opcoes):
@@ -44,27 +47,30 @@ def exibir_menu(tela: pygame.Surface, fundo: pygame.Surface, titulo, pos_titulo_
                     selecionado = (selecionado + 1) % len(opcoes)
                 if evento.key == pygame.K_RETURN:
                     if selecionado == 0:  # Iniciar Jogo
-                        personagem_escolhido = exibir_selecao_personagem(tela, fundo, titulo, pos_titulo_x, pos_titulo_y)
+                        personagem_escolhido = exibir_selecao_personagem(
+                            tela, fundo, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y + 50
+                        )
                         print(f"Personagem escolhido: {personagem_escolhido}")
                         return "INICIAR_JOGO"
                     elif selecionado == 1:  # Configurações
-                        exibir_configuracoes(tela, fundo, titulo, pos_titulo_x, pos_titulo_y)
+                        exibir_configuracoes(tela, fundo, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y)
                     elif selecionado == 2:  # Créditos
-                        exibir_creditos(tela, fundo, titulo, pos_titulo_x, pos_titulo_y)
+                        exibir_creditos(tela, fundo, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y)
                     elif selecionado == 3:  # Sair
                         pygame.quit()
                         sys.exit()
 
 
-def exibir_configuracoes(tela: pygame.Surface, fundo: pygame.Surface, titulo, pos_titulo_x, pos_titulo_y) -> None:
+def exibir_configuracoes(tela: pygame.Surface, fundo: pygame.Surface, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y) -> None:
     """
     Exibe a tela de configurações.
     """
     tela.blit(fundo, (0, 0))  # Redesenha o fundo
-    tela.blit(titulo, (pos_titulo_x, pos_titulo_y))  # Exibe o título fixo no topo
-    font = pygame.font.Font(None, 35)
+    texto_titulo = renderizar_com_contorno("Configurações", fonte_titulo, cor_titulo, (0, 0, 0))
+    tela.blit(texto_titulo, (pos_titulo_x - texto_titulo.get_width() // 2, pos_titulo_y))
+    fonte = pygame.font.Font(None, 35)
     texto = renderizar_com_contorno(
-        "Configurações em desenvolvimento...", font, (255, 255, 255), (0, 0, 0)
+        "Configurações em desenvolvimento...", fonte, (255, 255, 255), (0, 0, 0)
     )
     pos_x = (tela.get_width() - texto.get_width()) // 2
     pos_y = tela.get_height() // 2
@@ -74,15 +80,16 @@ def exibir_configuracoes(tela: pygame.Surface, fundo: pygame.Surface, titulo, po
     pygame.time.wait(2000)
 
 
-def exibir_creditos(tela: pygame.Surface, fundo: pygame.Surface, titulo, pos_titulo_x, pos_titulo_y) -> None:
+def exibir_creditos(tela: pygame.Surface, fundo: pygame.Surface, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y) -> None:
     """
     Exibe a tela de créditos.
     """
     tela.blit(fundo, (0, 0))  # Redesenha o fundo
-    tela.blit(titulo, (pos_titulo_x, pos_titulo_y))  # Exibe o título fixo no topo
-    font = pygame.font.Font(None, 35)
+    texto_titulo = renderizar_com_contorno("Créditos", fonte_titulo, cor_titulo, (0, 0, 0))
+    tela.blit(texto_titulo, (pos_titulo_x - texto_titulo.get_width() // 2, pos_titulo_y))
+    fonte = pygame.font.Font(None, 35)
     texto = renderizar_com_contorno(
-        "Criado por: Thiago Dias Precivalli", font, (255, 255, 255), (0, 0, 0)
+        "Criado por: Thiago Dias Precivalli", fonte, (255, 255, 255), (0, 0, 0)
     )
     pos_x = (tela.get_width() - texto.get_width()) // 2
     pos_y = tela.get_height() // 2

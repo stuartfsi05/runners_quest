@@ -85,14 +85,13 @@ def main():
     cor_titulo = (255, 255, 255)
     cor_contorno = (0, 0, 0)
     fonte_titulo = pygame.font.Font("recursos/fontes/title_screen.ttf", 48)
-    titulo = renderizar_com_contorno("RUNNER'S QUEST", fonte_titulo, cor_titulo, cor_contorno)
 
     largura_tela, altura_tela = tela.get_size()
-    pos_titulo_x = (largura_tela - titulo.get_width()) // 2
+    pos_titulo_x = largura_tela // 2
     pos_titulo_y = (altura_tela // 4) - 50
 
     # Exibe o menu principal e aguarda a ação do jogador
-    acao = exibir_menu(tela, fundo, titulo, pos_titulo_x, pos_titulo_y)
+    acao = exibir_menu(tela, fundo, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y)
 
     # Verificar a ação retornada pelo menu
     if acao == "INICIAR_JOGO":

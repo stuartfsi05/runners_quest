@@ -1,7 +1,7 @@
 import pygame
 from interface import renderizar_com_contorno  # Reutiliza a função para texto com contorno
 
-def exibir_selecao_personagem(tela: pygame.Surface, fundo: pygame.Surface, titulo, pos_titulo_x, pos_titulo_y) -> str:
+def exibir_selecao_personagem(tela: pygame.Surface, fundo: pygame.Surface, fonte_global, cor_titulo, pos_titulo_x, pos_titulo_y) -> str:
     """
     Exibe a tela de seleção de personagem com spritesheets animados e retorna o personagem escolhido.
     """
@@ -25,7 +25,7 @@ def exibir_selecao_personagem(tela: pygame.Surface, fundo: pygame.Surface, titul
 
     # Controle do cursor piscante
     cursor_visivel = True
-    cursor_delay = 100  # Tempo reduzido para alternar a visibilidade do cursor
+    cursor_delay = 100  # Tempo para alternar a visibilidade do cursor
     ultimo_tempo_cursor = pygame.time.get_ticks()
 
     # Carrega os spritesheets
@@ -38,9 +38,18 @@ def exibir_selecao_personagem(tela: pygame.Surface, fundo: pygame.Surface, titul
     espacamento_horizontal = 250
     ajuste_vertical = (tela.get_height() // 2) - altura_sprite + 100  # Ajuste vertical dos sprites
 
+    # Criação de uma fonte local para "Escolha seu personagem" com tamanho reduzido
+    fonte_local_selecao = pygame.font.Font("recursos/fontes/title_screen.ttf", 25)  # Tamanho da fonte ajustado
+
+    # Ajusta a posição vertical do texto para movê-lo mais para cima
+    pos_titulo_y -= 50  # Movendo o texto para cima 50 pixels (ajuste conforme necessário)
+
     while selecao_ativa:
         tela.blit(fundo, (0, 0))  # Redesenha o fundo
-        tela.blit(titulo, (pos_titulo_x, pos_titulo_y))  # Exibe o título fixo no topo
+
+        # Renderiza o texto "Escolha seu personagem" com a nova posição
+        texto_titulo = renderizar_com_contorno("Escolha seu personagem", fonte_local_selecao, cor_titulo, (0, 0, 0))
+        tela.blit(texto_titulo, (pos_titulo_x - texto_titulo.get_width() // 2, pos_titulo_y))
 
         # Atualiza o frame atual da animação com base no tempo decorrido
         tempo_atual = pygame.time.get_ticks()
@@ -65,7 +74,7 @@ def exibir_selecao_personagem(tela: pygame.Surface, fundo: pygame.Surface, titul
                     rect_y = pos_y - 10
                     rect_width = largura_sprite + 20
                     rect_height = altura_sprite + 20
-                    pygame.draw.rect(tela, (255, 255, 0), (rect_x, rect_y, rect_width, rect_height), 3)
+                    pygame.draw.rect(tela, (100, 255, 100), (rect_x, rect_y, rect_width, rect_height), 3)  # Cursor verde
 
                 # Calcula o frame atual da animação
                 frame_x = frame_atual * largura_sprite
