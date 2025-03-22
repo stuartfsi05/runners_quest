@@ -10,7 +10,9 @@ def exibir_menu(tela: pygame.Surface, fundo: pygame.Surface, fonte_titulo, cor_t
     """
     cor_texto = (255, 255, 255)  # Branco
     cor_selecionada = (255, 255, 0)  # Amarelo para destacar a opção selecionada
-    fonte_menu = pygame.font.Font(None, 35)  # Fonte personalizada para o menu
+
+    # Ajustando a fonte para o menu
+    fonte_menu = pygame.font.Font(None, 35)  # Fonte simples para o texto do menu
     opcoes = ["Iniciar Jogo", "Configurações", "Créditos", "Sair"]
 
     menu_ativo = True
@@ -21,7 +23,7 @@ def exibir_menu(tela: pygame.Surface, fundo: pygame.Surface, fonte_titulo, cor_t
     while menu_ativo:
         tela.blit(fundo, (0, 0))  # Redesenha o fundo
 
-        # Renderiza o título do menu com o nome do jogo
+        # Renderiza o título do menu
         texto_titulo = renderizar_com_contorno("Runner's Quest", fonte_titulo, cor_titulo, (0, 0, 0))
         tela.blit(texto_titulo, (pos_titulo_x - texto_titulo.get_width() // 2, pos_titulo_y))
 
@@ -47,10 +49,7 @@ def exibir_menu(tela: pygame.Surface, fundo: pygame.Surface, fonte_titulo, cor_t
                     selecionado = (selecionado + 1) % len(opcoes)
                 if evento.key == pygame.K_RETURN:
                     if selecionado == 0:  # Iniciar Jogo
-                        personagem_escolhido = exibir_selecao_personagem(
-                            tela, fundo, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y + 50
-                        )
-                        return personagem_escolhido  # Retorna o nome do personagem
+                        return "INICIAR_JOGO"
                     elif selecionado == 1:  # Configurações
                         exibir_configuracoes(tela, fundo, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y)
                     elif selecionado == 2:  # Créditos
@@ -65,11 +64,16 @@ def exibir_configuracoes(tela: pygame.Surface, fundo: pygame.Surface, fonte_titu
     Exibe a tela de configurações.
     """
     tela.blit(fundo, (0, 0))  # Redesenha o fundo
-    texto_titulo = renderizar_com_contorno("Configurações", fonte_titulo, cor_titulo, (0, 0, 0))
+
+    # Ajusta o tamanho da fonte para configurações
+    fonte_titulo_config = pygame.font.Font("recursos/fontes/title_screen.ttf", 50)
+    texto_titulo = renderizar_com_contorno("Configurações", fonte_titulo_config, cor_titulo, (0, 0, 0))
     tela.blit(texto_titulo, (pos_titulo_x - texto_titulo.get_width() // 2, pos_titulo_y))
-    fonte = pygame.font.Font("recursos/fontes/config_font.ttf", 35)  # Fonte personalizada para configurações
+
+    # Fonte menor para o texto de informações
+    fonte_informativo = pygame.font.Font(None, 35)  # Usando fonte padrão para texto simples
     texto = renderizar_com_contorno(
-        "Configurações em desenvolvimento...", fonte, (255, 255, 255), (0, 0, 0)
+        "Configurações em desenvolvimento...", fonte_informativo, (255, 255, 255), (0, 0, 0)
     )
     pos_x = (tela.get_width() - texto.get_width()) // 2
     pos_y = tela.get_height() // 2
@@ -84,11 +88,16 @@ def exibir_creditos(tela: pygame.Surface, fundo: pygame.Surface, fonte_titulo, c
     Exibe a tela de créditos.
     """
     tela.blit(fundo, (0, 0))  # Redesenha o fundo
-    texto_titulo = renderizar_com_contorno("Créditos", fonte_titulo, cor_titulo, (0, 0, 0))
+
+    # Ajusta a fonte para a seção de créditos
+    fonte_titulo_creditos = pygame.font.Font("recursos/fontes/title_screen.ttf", 50)
+    texto_titulo = renderizar_com_contorno("Créditos", fonte_titulo_creditos, cor_titulo, (0, 0, 0))
     tela.blit(texto_titulo, (pos_titulo_x - texto_titulo.get_width() // 2, pos_titulo_y))
-    fonte = pygame.font.Font("recursos/fontes/credits_font.ttf", 35)  # Fonte personalizada para créditos
+
+    # Fonte simples para informações dos créditos
+    fonte_informativo = pygame.font.Font(None, 35)  # Usando fonte padrão para texto simples
     texto = renderizar_com_contorno(
-        "Criado por: Thiago Dias Precivalli", fonte, (255, 255, 255), (0, 0, 0)
+        "Criado por: Thiago Dias Precivalli", fonte_informativo, (255, 255, 255), (0, 0, 0)
     )
     pos_x = (tela.get_width() - texto.get_width()) // 2
     pos_y = tela.get_height() // 2

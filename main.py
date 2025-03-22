@@ -92,7 +92,7 @@ def main():
     acao = exibir_menu(tela, fundo, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y)
 
     if acao == "INICIAR_JOGO":
-        # Exibe a tela de seleção de personagem
+        # Exibe a tela de seleção de personagem com spritesheets idle
         personagem_escolhido = exibir_selecao_personagem(
             tela, fundo, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y
         )

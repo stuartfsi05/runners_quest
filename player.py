@@ -15,10 +15,17 @@ class Player(pygame.sprite.Sprite):
         # Caminho base para os sprites do personagem
         base_path = f"recursos/imagens/{personagem.lower()}"
 
+        # Número de frames específicos para cada personagem
+        frames_config = {
+            "kael": {"jump": 10, "dead": 3},
+            "ryuji": {"jump": 12, "dead": 3},
+            "jinzo": {"jump": 12, "dead": 4},
+        }
+
         # Carregar spritesheets específicos do personagem
         self.frames_corrida = self._carregar_spritesheet(f"{base_path}/spritesheet_run.png", 8)
-        self.frames_jump = self._carregar_spritesheet(f"{base_path}/spritesheet_jump.png", 10)
-        self.frames_dead = self._carregar_spritesheet(f"{base_path}/spritesheet_dead.png", 3)
+        self.frames_jump = self._carregar_spritesheet(f"{base_path}/spritesheet_jump.png", frames_config[personagem.lower()]["jump"])
+        self.frames_dead = self._carregar_spritesheet(f"{base_path}/spritesheet_dead.png", frames_config[personagem.lower()]["dead"])
 
         # Configuração inicial do sprite
         self.frame_atual = 0
