@@ -20,7 +20,7 @@ def exibir_tela_inicial(tela: pygame.Surface) -> None:
     """
     Exibe a tela inicial com o nome do jogo e a mensagem piscando 'Pressione ENTER para começar'.
     """
-    fundo = pygame.image.load("recursos/imagens/title_screen.jpg").convert()
+    fundo = pygame.image.load("recursos/imagens/background/title_screen.jpg").convert()
     fundo = pygame.transform.scale(fundo, tela.get_size())
 
     pygame.mixer.init()
@@ -30,10 +30,13 @@ def exibir_tela_inicial(tela: pygame.Surface) -> None:
 
     cor_titulo = (255, 255, 255)
     cor_contorno = (0, 0, 0)
+
+    # Fonte para o título
     fonte_titulo = pygame.font.Font("recursos/fontes/title_screen.ttf", 48)
     titulo = renderizar_com_contorno("RUNNER'S QUEST", fonte_titulo, cor_titulo, cor_contorno)
 
-    fonte_instrucoes = pygame.font.Font(None, 36)
+    # Fonte simples para as instruções
+    fonte_instrucoes = pygame.font.Font(None, 36)  # Fonte padrão para o texto de instruções
     instrucoes = renderizar_com_contorno(
         "Pressione ENTER para começar", fonte_instrucoes, cor_titulo, cor_contorno
     )
@@ -65,7 +68,7 @@ def exibir_tela_inicial(tela: pygame.Surface) -> None:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 pygame.quit()
-                exit()
+                sys.exit()
             if evento.type == pygame.KEYDOWN and evento.key == pygame.K_RETURN:
                 pygame.event.clear()
                 return

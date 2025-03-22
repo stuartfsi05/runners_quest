@@ -5,19 +5,20 @@ from game_utils import GRAVIDADE, PULO
 class Player(pygame.sprite.Sprite):
     """Classe para representar o jogador no jogo."""
 
-    def __init__(self):
+    def __init__(self, personagem: str):
+        """
+        Inicializa o jogador com base no personagem selecionado.
+        :param personagem: Nome do personagem (Kael, Ryuji, Jinzo).
+        """
         super().__init__()
 
-        # Carregar spritesheets
-        self.frames_corrida = self._carregar_spritesheet(
-            "recursos/imagens/spritesheet_run.png", 8
-        )
-        self.frames_jump = self._carregar_spritesheet(
-            "recursos/imagens/spritesheet_jump.png", 10
-        )
-        self.frames_dead = self._carregar_spritesheet(
-            "recursos/imagens/spritesheet_dead.png", 3
-        )
+        # Caminho base para os sprites do personagem
+        base_path = f"recursos/imagens/{personagem.lower()}"
+
+        # Carregar spritesheets específicos do personagem
+        self.frames_corrida = self._carregar_spritesheet(f"{base_path}/spritesheet_run.png", 8)
+        self.frames_jump = self._carregar_spritesheet(f"{base_path}/spritesheet_jump.png", 10)
+        self.frames_dead = self._carregar_spritesheet(f"{base_path}/spritesheet_dead.png", 3)
 
         # Configuração inicial do sprite
         self.frame_atual = 0

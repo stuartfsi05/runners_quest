@@ -1,8 +1,9 @@
 import pygame
-from player import Player
 from obstaculo import Obstaculo
-from interface import exibir_tela_inicial, renderizar_com_contorno
-from menu import exibir_menu  # Menu principal agora no menu.py
+from interface import exibir_tela_inicial
+from menu import exibir_menu  # Menu principal
+from selecao_personagem import exibir_selecao_personagem  # Tela de seleção de personagens
+from player import Player  # Classe do jogador
 
 # Configurações do jogo
 LARGURA_TELA = 800
@@ -10,7 +11,7 @@ ALTURA_TELA = 400
 BRANCO = (255, 255, 255)
 INTERVALO_OBSTACULOS = 2000  # Intervalo entre obstáculos (em milissegundos)
 
-# Inicialização do Pygame e tela principal
+# Inicialização do Pygame e da tela principal
 pygame.init()
 tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
 pygame.display.set_caption("Runner's Quest")
@@ -18,12 +19,10 @@ relogio = pygame.time.Clock()
 
 # Grupos de sprites
 grupo_jogador = pygame.sprite.GroupSingle()
-grupo_jogador.add(Player())
-
 grupo_obstaculos = pygame.sprite.Group()
 
 # Carregamento do cenário
-cenario = pygame.image.load("recursos/imagens/fundo_fase_1.png").convert()
+cenario = pygame.image.load("recursos/imagens/background/fundo_fase_1.png").convert()
 cenario = pygame.transform.scale(cenario, (LARGURA_TELA, ALTURA_TELA))
 cenario_largura = cenario.get_width()
 cenario_x1 = 0
@@ -79,22 +78,30 @@ def main():
     # Exibe a tela inicial antes de ir para o menu
     exibir_tela_inicial(tela)
 
-    # Configurações visuais do título e fundo
-    fundo = pygame.image.load("recursos/imagens/title_screen.jpg").convert()
+    # Configurações visuais do título e fundo do menu
+    fundo = pygame.image.load("recursos/imagens/background/title_screen.jpg").convert()
     fundo = pygame.transform.scale(fundo, tela.get_size())
     cor_titulo = (255, 255, 255)
-    cor_contorno = (0, 0, 0)
     fonte_titulo = pygame.font.Font("recursos/fontes/title_screen.ttf", 48)
 
     largura_tela, altura_tela = tela.get_size()
     pos_titulo_x = largura_tela // 2
     pos_titulo_y = (altura_tela // 4) - 50
 
-    # Exibe o menu principal e aguarda a ação do jogador
+    # Exibe o menu principal
     acao = exibir_menu(tela, fundo, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y)
 
-    # Verificar a ação retornada pelo menu
     if acao == "INICIAR_JOGO":
+        # Exibe a tela de seleção de personagem
+        personagem_escolhido = exibir_selecao_personagem(
+            tela, fundo, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y
+        )
+
+        # Carrega o personagem escolhido
+        jogador = Player(personagem_escolhido)
+        grupo_jogador.add(jogador)
+
+        # Inicia o jogo
         pygame.mixer.music.load("recursos/sons/level_1.wav")
         pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1)
@@ -117,7 +124,6 @@ def main():
                 if evento.type == pygame.QUIT:
                     running = False
 
-            jogador = grupo_jogador.sprite
             if not jogador_morto:
                 grupo_jogador.update(teclas)
 

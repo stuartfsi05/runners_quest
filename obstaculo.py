@@ -4,13 +4,30 @@ import pygame
 class Obstaculo(pygame.sprite.Sprite):
     """Classe para representar os obstáculos no jogo."""
 
-    def __init__(self, velocidade: int) -> None:
-        """Inicializa o obstáculo com velocidade e configurações visuais."""
+    def __init__(self, velocidade: int, tipo: str = "padrao") -> None:
+        """
+        Inicializa o obstáculo com velocidade e configurações visuais.
+        
+        Args:
+            velocidade (int): Velocidade horizontal do obstáculo.
+            tipo (str): Tipo de obstáculo (padrão: "padrao"). Pode ser usado para variações visuais.
+        """
         super().__init__()
 
-        # Configuração visual do obstáculo (exemplo: quadrado vermelho)
-        self.image = pygame.Surface((40, 40))
-        self.image.fill((255, 0, 0))  # Cor vermelha para o obstáculo
+        # Caminho base para recursos de obstáculos
+        base_path = "recursos/imagens/obstaculos"
+
+        # Configuração visual do obstáculo com base no tipo
+        if tipo == "padrao":
+            self.image = pygame.Surface((40, 40))
+            self.image.fill((255, 0, 0))  # Cor vermelha para o obstáculo padrão
+        elif tipo == "spike":
+            self.image = pygame.image.load(f"{base_path}/spike.png").convert_alpha()
+        elif tipo == "block":
+            self.image = pygame.image.load(f"{base_path}/block.png").convert_alpha()
+        else:
+            raise ValueError(f"Tipo de obstáculo inválido: {tipo}")
+
         self.rect = self.image.get_rect()
 
         # Posicionamento inicial fora da tela (lado direito)
