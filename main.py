@@ -72,7 +72,7 @@ def atualizar_cenario():
 def main():
     """
     Loop principal do jogo.
-    """
+    """ 
     global tempo_ultimo_obstaculo
 
     # Exibe a tela inicial antes de ir para o menu
