@@ -1,15 +1,17 @@
 import pygame
 from obstaculo import Obstaculo
 from interface import exibir_tela_inicial
-from menu import exibir_menu  # Menu principal
-from selecao_personagem import exibir_selecao_personagem  # Tela de seleção de personagens
-from player import Player  # Classe do jogador
+from menu import exibir_menu
+from selecao_personagem import exibir_selecao_personagem
+from player import Player
+from fase_1 import carregar_fase_1, gerar_obstaculos_fase_1
 
 # Configurações do jogo
 LARGURA_TELA = 800
 ALTURA_TELA = 400
 BRANCO = (255, 255, 255)
-INTERVALO_OBSTACULOS = 2000  # Intervalo entre obstáculos (em milissegundos)
+INTERVALO_OBSTACULOS = 3000  # Intervalo entre geração de obstáculos em milissegundos
+MAX_OBSTACULOS_TELA = 5  # Número máximo de obstáculos simultâneos
 
 # Inicialização do Pygame e da tela principal
 pygame.init()
@@ -22,7 +24,7 @@ grupo_jogador = pygame.sprite.GroupSingle()
 grupo_obstaculos = pygame.sprite.Group()
 
 # Carregamento do cenário
-cenario = pygame.image.load("recursos/imagens/background/fundo_fase_1.png").convert()
+cenario = pygame.image.load("recursos/imagens/background/fase_1/fundo_fase_1.png").convert()
 cenario = pygame.transform.scale(cenario, (LARGURA_TELA, ALTURA_TELA))
 cenario_largura = cenario.get_width()
 cenario_x1 = 0
@@ -32,19 +34,8 @@ cenario_x2 = cenario_largura
 tempo_ultimo_obstaculo = pygame.time.get_ticks()
 
 
-def gerar_obstaculo():
-    """
-    Gera um novo obstáculo e o adiciona ao grupo.
-    """
-    velocidade = 5  # Velocidade inicial dos obstáculos
-    novo_obstaculo = Obstaculo(velocidade)
-    grupo_obstaculos.add(novo_obstaculo)
-
-
 def exibir_game_over():
-    """
-    Exibe a mensagem de 'Game Over' na tela.
-    """
+    """Exibe a mensagem de 'Game Over' na tela."""
     font = pygame.font.Font(None, 74)
     texto_game_over = font.render("Game Over", True, (255, 0, 0))
     tela.blit(texto_game_over, (250, 150))
@@ -53,9 +44,7 @@ def exibir_game_over():
 
 
 def atualizar_cenario():
-    """
-    Atualiza o movimento do cenário para criar a ilusão de deslocamento.
-    """
+    """Atualiza o movimento do cenário para criar a ilusão de deslocamento."""
     global cenario_x1, cenario_x2
     cenario_x1 -= 2
     cenario_x2 -= 2
@@ -70,15 +59,13 @@ def atualizar_cenario():
 
 
 def main():
-    """
-    Loop principal do jogo.
-    """ 
+    """Loop principal do jogo."""
     global tempo_ultimo_obstaculo
 
-    # Exibe a tela inicial antes de ir para o menu
+    # Exibe a tela inicial antes do menu
     exibir_tela_inicial(tela)
 
-    # Configurações visuais do título e fundo do menu
+    # Configurações visuais do menu principal
     fundo = pygame.image.load("recursos/imagens/background/title_screen.jpg").convert()
     fundo = pygame.transform.scale(fundo, tela.get_size())
     cor_titulo = (255, 255, 255)
@@ -92,7 +79,7 @@ def main():
     acao = exibir_menu(tela, fundo, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y)
 
     if acao == "INICIAR_JOGO":
-        # Exibe a tela de seleção de personagem com spritesheets idle
+        # Exibe a tela de seleção de personagem
         personagem_escolhido = exibir_selecao_personagem(
             tela, fundo, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y
         )
@@ -101,22 +88,22 @@ def main():
         jogador = Player(personagem_escolhido)
         grupo_jogador.add(jogador)
 
-        # Inicia o jogo
-        pygame.mixer.music.load("recursos/sons/level_1.wav")
-        pygame.mixer.music.set_volume(0.5)
-        pygame.mixer.music.play(-1)
+        # Carrega o cenário e a música da fase 1
+        carregar_fase_1(tela)
 
         running = True
         jogador_morto = False
         tempo_inicio_dead = 0
 
+        # Controle de tempo da fase
+        tempo_fase = 0
+        DURACAO_FASE_1 = 60000  # Duração de 60 segundos
+
         while running:
+            tela.fill(BRANCO)
+
             if not jogador_morto:
-                tela.fill(BRANCO)
                 atualizar_cenario()
-            else:
-                tela.blit(cenario, (cenario_x1, 0))
-                tela.blit(cenario, (cenario_x2, 0))
 
             teclas = pygame.key.get_pressed()
 
@@ -127,20 +114,31 @@ def main():
             if not jogador_morto:
                 grupo_jogador.update(teclas)
 
+            # Desenha o jogador
             grupo_jogador.draw(tela)
-            jogador.draw_hitbox(tela)
+            pygame.draw.rect(tela, (0, 255, 0), jogador.hitbox, 2)  # Verde para hitbox
 
             if not jogador_morto:
                 tempo_atual = pygame.time.get_ticks()
-                if tempo_atual - tempo_ultimo_obstaculo > INTERVALO_OBSTACULOS:
-                    gerar_obstaculo()
-                    tempo_ultimo_obstaculo = tempo_atual
+
+                # Geração controlada de obstáculos
+                if len(grupo_obstaculos) < MAX_OBSTACULOS_TELA:
+                    if tempo_atual - tempo_ultimo_obstaculo > INTERVALO_OBSTACULOS:
+                        gerar_obstaculos_fase_1(grupo_obstaculos, velocidade=5)
+                        tempo_ultimo_obstaculo = tempo_atual
 
                 grupo_obstaculos.update()
 
+            # Desenha os obstáculos
             grupo_obstaculos.draw(tela)
 
+            # Força o desenho manual caso draw não funcione corretamente
+            for obstaculo in grupo_obstaculos:
+                tela.blit(obstaculo.image, obstaculo.rect.topleft)  # Desenho manual
+                pygame.draw.rect(tela, (255, 0, 0), obstaculo.rect, 2)  # Hitbox
+
             if not jogador_morto:
+                # Verifica colisões
                 for obstaculo in grupo_obstaculos:
                     if jogador.hitbox.colliderect(obstaculo.rect):
                         jogador.estado = "morto"
@@ -151,12 +149,17 @@ def main():
             if jogador_morto:
                 jogador.executar_animacao_dead()
                 grupo_jogador.draw(tela)
-                jogador.draw_hitbox(tela)
                 grupo_obstaculos.draw(tela)
 
                 if pygame.time.get_ticks() - tempo_inicio_dead > 1000:
                     exibir_game_over()
                     running = False
+
+            # Controle do tempo da fase
+            tempo_fase += relogio.get_time()
+            if tempo_fase >= DURACAO_FASE_1:
+                print("Fase 1 concluída!")  # Substitua pela transição para a próxima fase
+                running = False
 
             pygame.display.flip()
             relogio.tick(60)
