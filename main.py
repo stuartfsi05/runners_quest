@@ -135,12 +135,14 @@ def main():
             # Força o desenho manual caso draw não funcione corretamente
             for obstaculo in grupo_obstaculos:
                 tela.blit(obstaculo.image, obstaculo.rect.topleft)  # Desenho manual
-                pygame.draw.rect(tela, (255, 0, 0), obstaculo.rect, 2)  # Hitbox
+
+                # Alinha e desenha a hitbox ajustada
+                pygame.draw.rect(tela, (255, 0, 0), obstaculo.hitbox, 2)  # Usa hitbox ajustada
 
             if not jogador_morto:
                 # Verifica colisões
                 for obstaculo in grupo_obstaculos:
-                    if jogador.hitbox.colliderect(obstaculo.rect):
+                    if jogador.hitbox.colliderect(obstaculo.hitbox):  # Usa hitbox ajustada para colisão
                         jogador.estado = "morto"
                         jogador_morto = True
                         tempo_inicio_dead = pygame.time.get_ticks()
