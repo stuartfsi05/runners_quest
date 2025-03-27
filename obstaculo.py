@@ -42,7 +42,12 @@ class Obstaculo(pygame.sprite.Sprite):
     def _configurar_rect(self) -> None:
         """Configura o retângulo principal baseado na imagem."""
         bounding_rect = self.image.get_bounding_rect()
-        self.rect = pygame.Rect(800, 250, bounding_rect.width, bounding_rect.height)
+        if self.tipo == "tronco":
+            # Alinhamento para tronco
+            self.rect = pygame.Rect(800, 240, bounding_rect.width, bounding_rect.height)
+        elif self.tipo == "galho":
+            # Alinhamento para galho
+            self.rect = pygame.Rect(800, 235, bounding_rect.width, bounding_rect.height)
 
     def _configurar_hitbox(self) -> None:
         """Configura a hitbox baseada no tipo de obstáculo."""
@@ -54,7 +59,7 @@ class Obstaculo(pygame.sprite.Sprite):
             # Ajuste específico para tronco
             self.hitbox = pygame.Rect(
                 self.rect.x + 7,  # Movendo a hitbox 7px mais para a direita
-                self.rect.y + 44,  # Movendo a hitbox 44px mais para baixo
+                self.rect.y + 44,  # Mantém o alinhamento do tronco
                 hitbox_width,
                 hitbox_height
             )
@@ -62,7 +67,7 @@ class Obstaculo(pygame.sprite.Sprite):
             # Ajuste específico para galho
             self.hitbox = pygame.Rect(
                 self.rect.x + 5,  # Movendo a hitbox 5px mais para a direita
-                self.rect.y + 50,  # Movendo a hitbox 50px mais para baixo
+                self.rect.y + 20,  # Mantém o alinhamento do galho
                 hitbox_width,
                 hitbox_height
             )
@@ -81,8 +86,8 @@ class Obstaculo(pygame.sprite.Sprite):
             self.hitbox.x = self.rect.x + 5  # Ajuste horizontal para galho
             self.hitbox.y = self.rect.y + 20  # Ajuste vertical para galho
 
+        # Remove o obstáculo quando sair da tela
         if self.rect.right <= 0:
-            print(f"[INFO] Obstáculo {self.tipo} removido: {self.rect.x}, {self.rect.y}")
             self.kill()
 
     def draw_hitbox(self, tela: pygame.Surface) -> None:

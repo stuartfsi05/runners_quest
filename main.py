@@ -118,6 +118,9 @@ def main():
             grupo_jogador.draw(tela)
             pygame.draw.rect(tela, (0, 255, 0), jogador.hitbox, 2)  # Verde para hitbox
 
+            # Desenha uma linha horizontal para representar o chão onde o jogador corre
+            pygame.draw.line(tela, (255, 255, 0), (0, 380), (LARGURA_TELA, 380), 2)
+
             if not jogador_morto:
                 tempo_atual = pygame.time.get_ticks()
 
