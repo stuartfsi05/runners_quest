@@ -1,7 +1,3 @@
-Aqui está uma versão refinada do seu README com **instruções muito detalhadas e acessíveis**, para garantir que qualquer pessoa possa configurar e jogar o **Runner's Quest** sem dificuldade. Essa abordagem considera que o jogador pode ser iniciante na área ou nunca ter usado Python antes.
-
----
-
 # Runner's Quest
 
 **Runner's Quest** é um projeto universitário desenvolvido como parte dos meus estudos. Este jogo de plataforma foi criado com Python e Pygame, e oferece uma experiência divertida e acessível para jogadores e curiosos.
@@ -94,7 +90,3 @@ pip install pygame
 
 ## 💡 Contribuição
 Como este é um projeto acadêmico e de aprendizado, estou aberto a sugestões e feedbacks! Se você encontrar algum problema ou tiver ideias para melhorias, sinta-se à vontade para abrir uma **issue** ou enviar um **pull request** no GitHub.
-
----
-
-Com estas instruções, qualquer pessoa pode baixar e jogar o **Runner's Quest**, mesmo sem experiência prévia em Python. Caso precise de mais ajustes ou queira tornar o jogo ainda mais acessível, estou por aqui para ajudar! 🚀🙂
