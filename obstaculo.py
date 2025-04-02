@@ -3,7 +3,13 @@ import pygame
 
 
 class Obstaculo(pygame.sprite.Sprite):
-    """Classe para representar os obstáculos no jogo."""
+    """
+    Classe para representar os obstáculos no jogo.
+
+    Attributes:
+        BASE_PATH (str): Caminho base para os recursos visuais dos obstáculos.
+        CONFIGS (dict): Configurações dos tamanhos dos obstáculos.
+    """
 
     BASE_PATH = "recursos/imagens/obstaculos"
     CONFIGS = {
@@ -28,7 +34,12 @@ class Obstaculo(pygame.sprite.Sprite):
         self._configurar_hitbox()
 
     def _carregar_imagem(self) -> pygame.Surface:
-        """Carrega a imagem do obstáculo ou cria um fallback visual."""
+        """
+        Carrega a imagem do obstáculo ou cria um fallback visual.
+
+        Returns:
+            pygame.Surface: Imagem do obstáculo ou uma superfície de fallback.
+        """
         image_path = os.path.join(self.BASE_PATH, f"{self.tipo}.png")
         if os.path.exists(image_path):
             return pygame.image.load(image_path).convert_alpha()
@@ -40,34 +51,33 @@ class Obstaculo(pygame.sprite.Sprite):
         return surface
 
     def _configurar_rect(self) -> None:
-        """Configura o retângulo principal baseado na imagem."""
+        """
+        Configura o retângulo principal baseado na imagem do obstáculo.
+        """
         bounding_rect = self.image.get_bounding_rect()
-        if self.tipo == "tronco":
-            # Alinhamento para tronco
-            self.rect = pygame.Rect(800, 240, bounding_rect.width, bounding_rect.height)
-        elif self.tipo == "galho":
-            # Alinhamento para galho
-            self.rect = pygame.Rect(800, 235, bounding_rect.width, bounding_rect.height)
+        x_pos = 800
+        y_pos = 240 if self.tipo == "tronco" else 235  # Posição inicial ajustada por tipo
+        self.rect = pygame.Rect(x_pos, y_pos, bounding_rect.width, bounding_rect.height)
 
     def _configurar_hitbox(self) -> None:
-        """Configura a hitbox baseada no tipo de obstáculo."""
+        """
+        Configura a hitbox baseada no tipo de obstáculo.
+        """
         bounding_rect = self.image.get_bounding_rect()
         hitbox_width = bounding_rect.width - 5  # Ajuste fino na largura
         hitbox_height = bounding_rect.height - 5  # Ajuste fino na altura
 
         if self.tipo == "tronco":
-            # Ajuste específico para tronco
             self.hitbox = pygame.Rect(
-                self.rect.x + 7,  # Movendo a hitbox 7px mais para a direita
-                self.rect.y + 44,  # Mantém o alinhamento do tronco
+                self.rect.x + 7,
+                self.rect.y + 44,
                 hitbox_width,
                 hitbox_height
             )
         elif self.tipo == "galho":
-            # Ajuste específico para galho
             self.hitbox = pygame.Rect(
-                self.rect.x + 5,  # Movendo a hitbox 5px mais para a direita
-                self.rect.y + 20,  # Mantém o alinhamento do galho
+                self.rect.x + 5,
+                self.rect.y + 20,
                 hitbox_width,
                 hitbox_height
             )
@@ -75,21 +85,28 @@ class Obstaculo(pygame.sprite.Sprite):
         self.hitbox.centerx = self.rect.centerx  # Centraliza horizontalmente
 
     def update(self) -> None:
-        """Atualiza a posição do obstáculo na tela."""
+        """
+        Atualiza a posição do obstáculo na tela.
+        """
         self.rect.x -= self.velocidade
 
         # Atualiza a posição da hitbox com base no tipo
         if self.tipo == "tronco":
-            self.hitbox.x = self.rect.x + 7  # Ajuste horizontal para tronco
-            self.hitbox.y = self.rect.y + 44  # Ajuste vertical para tronco
+            self.hitbox.x = self.rect.x + 7
+            self.hitbox.y = self.rect.y + 44
         elif self.tipo == "galho":
-            self.hitbox.x = self.rect.x + 5  # Ajuste horizontal para galho
-            self.hitbox.y = self.rect.y + 20  # Ajuste vertical para galho
+            self.hitbox.x = self.rect.x + 5
+            self.hitbox.y = self.rect.y + 20
 
         # Remove o obstáculo quando sair da tela
         if self.rect.right <= 0:
             self.kill()
 
     def draw_hitbox(self, tela: pygame.Surface) -> None:
-        """Desenha a hitbox para depuração."""
+        """
+        Desenha a hitbox para depuração.
+
+        Args:
+            tela (pygame.Surface): Superfície onde a hitbox será desenhada.
+        """
         pygame.draw.rect(tela, (255, 0, 0), self.hitbox, 2)  # Vermelho, espessura 2px

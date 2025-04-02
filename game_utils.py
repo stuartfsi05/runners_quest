@@ -6,27 +6,28 @@ CORES = {
     "AZUL": (0, 0, 255),
     "VERMELHO": (255, 0, 0),
     "VERDE": (0, 255, 0),
-    "PRETO": (0, 0, 0)
+    "PRETO": (0, 0, 0),
 }
 
 GRAVIDADE = 1
 PULO = -20  # Intensidade do pulo
 LARGURA_TELA = 800
-ALTURA_TELA = 400  # Adicionei ALTURA para manter coerência em diferentes arquivos
+ALTURA_TELA = 400  # Adiciona ALTURA para manter coerência em diferentes arquivos
 
 # Relógio para controle de FPS
 RELOGIO = pygame.time.Clock()
 
 
 def carregar_fonte(caminho: str, tamanho: int) -> pygame.font.Font:
-    """Carrega uma fonte personalizada com um tamanho específico.
+    """
+    Carrega uma fonte personalizada com um tamanho específico.
 
     Args:
         caminho (str): Caminho para o arquivo da fonte.
         tamanho (int): Tamanho da fonte.
 
     Returns:
-        pygame.font.Font: Objeto de fonte carregada.
+        pygame.font.Font: Objeto da fonte carregada.
     """
     try:
         return pygame.font.Font(caminho, tamanho)
@@ -34,8 +35,13 @@ def carregar_fonte(caminho: str, tamanho: int) -> pygame.font.Font:
         raise FileNotFoundError(f"Fonte não encontrada no caminho: {caminho}")
 
 
-def exibir_pontuacao(tela: pygame.Surface, pontuacao: int, fonte: pygame.font.Font) -> None:
-    """Exibe a pontuação na tela.
+def exibir_pontuacao(
+    tela: pygame.Surface,
+    pontuacao: int,
+    fonte: pygame.font.Font
+) -> None:
+    """
+    Exibe a pontuação na tela.
 
     Args:
         tela (pygame.Surface): Superfície onde a pontuação será exibida.
@@ -46,8 +52,14 @@ def exibir_pontuacao(tela: pygame.Surface, pontuacao: int, fonte: pygame.font.Fo
     tela.blit(texto, (10, 10))
 
 
-def exibir_texto_centralizado(tela: pygame.Surface, texto: str, fonte: pygame.font.Font, cor: tuple) -> None:
-    """Exibe um texto centralizado na tela.
+def exibir_texto_centralizado(
+    tela: pygame.Surface,
+    texto: str,
+    fonte: pygame.font.Font,
+    cor: tuple
+) -> None:
+    """
+    Exibe um texto centralizado na tela.
 
     Args:
         tela (pygame.Surface): Superfície onde o texto será exibido.
@@ -62,7 +74,8 @@ def exibir_texto_centralizado(tela: pygame.Surface, texto: str, fonte: pygame.fo
 
 
 def aplicar_gravidade(velocidade: int) -> int:
-    """Aplica a gravidade à velocidade do jogador.
+    """
+    Aplica a gravidade à velocidade do jogador.
 
     Args:
         velocidade (int): Velocidade vertical atual do jogador.
