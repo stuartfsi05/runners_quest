@@ -1,6 +1,6 @@
 # Runner's Quest
 
-**Runner's Quest** é um projeto universitário desenvolvido como parte dos meus estudos. Este jogo de plataforma foi criado com Python e Pygame, e oferece uma experiência divertida e acessível para jogadores e curiosos.
+**Runner's Quest** é um projeto universitário desenvolvido como parte dos meus estudos. Este jogo de plataforma foi criado com **Python** e **Pygame**, oferecendo uma experiência divertida e acessível para todos os jogadores.
 
 ---
 
@@ -20,7 +20,7 @@ Este projeto foi desenvolvido com os seguintes objetivos:
 ---
 
 ## 🛠️ Tecnologias Utilizadas
-- **Python:** A linguagem principal para construir o jogo e sua lógica.
+- **Python:** Linguagem principal para construção do jogo e sua lógica.
 - **Pygame:** Biblioteca utilizada para criação de gráficos, animações e sons.
 
 ---
@@ -34,49 +34,58 @@ Este projeto foi desenvolvido com os seguintes objetivos:
 ---
 
 ## 📥 Como Baixar e Jogar no PC
-Siga as **instruções detalhadas** abaixo para instalar e jogar o **Runner's Quest** no seu computador.
+Siga as instruções abaixo para instalar e jogar **Runner's Quest** no seu computador.
 
-### Etapa 1: Verifique os requisitos
-Certifique-se de que o seguinte está instalado no seu computador:
+### ✅ Etapa 1: Verifique os requisitos
+Antes de começar, verifique se seu computador possui os seguintes itens instalados:
 - **Python** (versão 3.8 ou superior).
-  - Caso não tenha Python instalado, baixe-o gratuitamente em [python.org](https://www.python.org/) e siga as instruções de instalação para Windows, macOS ou Linux.
-- **Pygame**, a biblioteca necessária para rodar o jogo.
+  - Para verificar se você já tem Python instalado, abra o **Prompt de Comando** (Windows) ou **Terminal** (Mac/Linux) e digite:
+    ```bash
+    python --version
+    ```
+  - Se Python não estiver instalado, baixe-o gratuitamente em [python.org](https://www.python.org/) e siga as instruções de instalação para Windows, macOS ou Linux.
 
----
+### 📥 Etapa 2: Baixe o jogo
+1. Acesse o repositório do jogo no GitHub:
+   [Runner's Quest - GitHub](https://github.com/seuusuario/runners-quest).
+2. Clique no botão **Code** e escolha **Download ZIP** para baixar o projeto.
+3. Extraia o conteúdo do arquivo ZIP para uma pasta de sua escolha.
+   - **Dica:** Certifique-se de lembrar onde extraiu o arquivo, pois precisaremos acessar essa pasta depois.
 
-### Etapa 2: Faça o download do jogo
-1. Acesse o repositório do jogo no GitHub:  
-   [Runner's Quest - GitHub](https://github.com/seuusuario/runners-quest).  
-2. Clique no botão **Code** e escolha **Download ZIP** para baixar o projeto ou use o seguinte comando no terminal para clonar o repositório:
-   ```bash
-   git clone https://github.com/stuartfsi05/runners-quest.git
-   ```
-
-3. Após o download, descompacte o arquivo ZIP (se você tiver escolhido essa opção) em uma pasta no seu computador.
-
----
-
-### Etapa 3: Instale o Pygame
-Abra o terminal ou prompt de comando e execute o seguinte comando para instalar o **Pygame**:
+Alternativamente, se você tem Git instalado, pode clonar o repositório executando:
 ```bash
-pip install pygame
+git clone https://github.com/seuusuario/runners-quest.git
 ```
-> 💡 **Dica:** Caso você tenha problemas com o comando acima, tente usar `python -m pip install pygame`.
 
----
+### 🔧 Etapa 3: Instale o Pygame
+Agora precisamos instalar a biblioteca **Pygame**, que permite que o jogo rode corretamente.
+1. Abra o **Prompt de Comando** (Windows) ou **Terminal** (Mac/Linux).
+2. Digite o seguinte comando e pressione **Enter**:
+   ```bash
+   pip install pygame
+   ```
+3. Aguarde a instalação ser concluída.
+   - **Se der erro:** Tente usar:
+     ```bash
+     python -m pip install pygame
+     ```
 
-### Etapa 4: Rode o jogo
-1. Abra o terminal ou prompt de comando.
-2. Navegue até a pasta onde você baixou o jogo:
+### 🎮 Etapa 4: Rode o jogo
+1. Abra o **Prompt de Comando** (Windows) ou **Terminal** (Mac/Linux).
+2. Navegue até a pasta onde extraiu o jogo. Para isso, use o comando:
    ```bash
    cd caminho/para/a/pasta/runners-quest
    ```
-3. Execute o jogo com o seguinte comando:
+   - Exemplo: Se a pasta está na sua Área de Trabalho, use:
+     ```bash
+     cd C:\Users\SeuNome\Desktop\runners-quest
+     ```
+3. Execute o jogo digitando:
    ```bash
    python main.py
    ```
 
-> 🎉 **Pronto!** O jogo será iniciado e você poderá começar a jogar **Runner's Quest**.
+> 🎉 **Parabéns!** O jogo será iniciado e você poderá começar a jogar **Runner's Quest**.
 
 ---
 
@@ -89,4 +98,9 @@ pip install pygame
 ---
 
 ## 💡 Contribuição
-Como este é um projeto acadêmico e de aprendizado, estou aberto a sugestões e feedbacks! Se você encontrar algum problema ou tiver ideias para melhorias, sinta-se à vontade para abrir uma **issue** ou enviar um **pull request** no GitHub.
+Este é um projeto acadêmico e de aprendizado. Se você encontrou algum problema ou tem sugestões de melhorias, fique à vontade para abrir uma **issue** ou enviar um **pull request** no GitHub.
+
+---
+
+**Obrigado por jogar Runner's Quest! Divirta-se! 🚀**
+
