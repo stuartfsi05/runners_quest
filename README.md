@@ -49,7 +49,7 @@ Antes de começar, você precisa ter o **Python** instalado (versão 3.8 ou supe
 
 ### 📥 Etapa 2: Baixe o jogo
 1. Acesse o repositório do jogo no GitHub:
-   [Runner's Quest - GitHub](https://github.com/seuusuario/runners-quest).
+   [Runner's Quest - GitHub](https://github.com/stuartfsi05/runners-quest).
 2. Clique no botão **Code** e escolha **Download ZIP** para baixar o projeto.
 3. Extraia o conteúdo do arquivo ZIP para uma pasta de sua escolha.
    - **Dica:** Certifique-se de lembrar onde extraiu o arquivo, pois precisaremos acessar essa pasta depois.
