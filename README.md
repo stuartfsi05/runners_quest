@@ -56,7 +56,7 @@ Antes de começar, você precisa ter o **Python** instalado (versão 3.8 ou supe
 
 Alternativamente, se você tem Git instalado, pode clonar o repositório executando:
 ```bash
-git clone https://github.com/seuusuario/runners-quest.git
+git clone https://github.com/stuartfsi05/runners-quest.git
 ```
 
 ### 🔧 Etapa 3: Instale o Pygame
