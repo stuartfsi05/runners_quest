@@ -49,7 +49,7 @@ Certifique-se de que o seguinte está instalado no seu computador:
    [Runner's Quest - GitHub](https://github.com/seuusuario/runners-quest).  
 2. Clique no botão **Code** e escolha **Download ZIP** para baixar o projeto ou use o seguinte comando no terminal para clonar o repositório:
    ```bash
-   git clone https://github.com/seuusuario/runners-quest.git
+   git clone https://github.com/stuartfsi05/runners-quest.git
    ```
 
 3. Após o download, descompacte o arquivo ZIP (se você tiver escolhido essa opção) em uma pasta no seu computador.
