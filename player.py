@@ -48,6 +48,14 @@ class Player(pygame.sprite.Sprite):
         # Frame da animação "Dead"
         self.frame_dead_atual = 0
 
+        # Carregar sons
+        self.som_pulo = pygame.mixer.Sound("recursos/sons/jump.wav")
+        self.som_aterrissagem = pygame.mixer.Sound("recursos/sons/landing.wav")
+
+        # Configurar volumes dos sons
+        self.som_pulo.set_volume(1.0)
+        self.som_aterrissagem.set_volume(1.0)
+
     def _carregar_spritesheet(self, caminho, num_frames):
         """Carrega e divide um spritesheet em frames."""
         spritesheet = pygame.image.load(caminho).convert_alpha()
@@ -72,12 +80,19 @@ class Player(pygame.sprite.Sprite):
             self.no_chao = False
             self.estado = "pulando"
 
+            # Tocar o som de pulo
+            self.som_pulo.play()
+
         # Aplicar gravidade
         self.velocidade_y += GRAVIDADE
         self.rect.y += self.velocidade_y
 
         # Limitar o jogador ao chão
         if self.rect.y >= 250:
+            if not self.no_chao:
+                # Tocar o som de aterrissagem apenas se o jogador estava no ar
+                self.som_aterrissagem.play()
+
             self.rect.y = 250
             self.velocidade_y = 0
             self.no_chao = True

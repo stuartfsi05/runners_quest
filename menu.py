@@ -20,6 +20,16 @@ def exibir_menu(tela: pygame.Surface, fundo: pygame.Surface, fonte_titulo, cor_t
     espacamento = 45
     deslocamento_vertical = 170
 
+    # Cálculo das posições das opções do menu
+    posicoes_opcoes = []
+    for i, opcao in enumerate(opcoes):
+        texto = fonte_menu.render(opcao, True, cor_texto)
+        largura_texto = texto.get_width()
+        altura_texto = texto.get_height()
+        pos_x = (tela.get_width() - largura_texto) // 2
+        pos_y = pos_titulo_y + deslocamento_vertical + i * espacamento
+        posicoes_opcoes.append(pygame.Rect(pos_x, pos_y, largura_texto, altura_texto))
+
     while menu_ativo:
         tela.blit(fundo, (0, 0))  # Redesenha o fundo
 
@@ -42,6 +52,8 @@ def exibir_menu(tela: pygame.Surface, fundo: pygame.Surface, fonte_titulo, cor_t
             if evento.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
+            # Controle por teclado
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_UP:
                     selecionado = (selecionado - 1) % len(opcoes)
@@ -57,6 +69,26 @@ def exibir_menu(tela: pygame.Surface, fundo: pygame.Surface, fonte_titulo, cor_t
                     elif selecionado == 3:  # Sair
                         pygame.quit()
                         sys.exit()
+
+            # Controle por mouse
+            if evento.type == pygame.MOUSEMOTION:
+                for i, pos in enumerate(posicoes_opcoes):
+                    if pos.collidepoint(evento.pos):
+                        selecionado = i
+
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                if evento.button == 1:  # Clique com o botão esquerdo
+                    for i, pos in enumerate(posicoes_opcoes):
+                        if pos.collidepoint(evento.pos):
+                            if i == 0:  # Iniciar Jogo
+                                return "INICIAR_JOGO"
+                            elif i == 1:  # Configurações
+                                exibir_configuracoes(tela, fundo, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y)
+                            elif i == 2:  # Créditos
+                                exibir_creditos(tela, fundo, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y)
+                            elif i == 3:  # Sair
+                                pygame.quit()
+                                sys.exit()
 
 
 def exibir_configuracoes(tela: pygame.Surface, fundo: pygame.Surface, fonte_titulo, cor_titulo, pos_titulo_x, pos_titulo_y) -> None:

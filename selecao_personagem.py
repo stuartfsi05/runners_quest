@@ -1,5 +1,6 @@
 import pygame
 from interface import renderizar_com_contorno  # Reutiliza a função para texto com contorno
+import time  # Para adicionar a pausa de 1 segundo
 
 def exibir_selecao_personagem(tela: pygame.Surface, fundo: pygame.Surface, fonte_global, cor_titulo, pos_titulo_x, pos_titulo_y) -> str:
     """
@@ -55,17 +56,36 @@ def exibir_selecao_personagem(tela: pygame.Surface, fundo: pygame.Surface, fonte
     espacamento_horizontal = 250
     ajuste_vertical = (tela.get_height() // 2) - altura_sprite + 100
 
-    fonte_local_selecao = pygame.font.Font("recursos/fontes/title_screen.ttf", 25)
+    # Fonte ajustada para o título e instruções
+    fonte_titulo = pygame.font.Font(None, 40)  # Reduzindo o tamanho para caber na tela
+    fonte_instrucoes = pygame.font.Font(None, 27)  # Fonte para instruções
 
-    # Desce a posição do título
-    pos_titulo_y += 30
+    # Ajustando o título mais para cima
+    pos_titulo_y_atualizado = pos_titulo_y - 50
 
     while selecao_ativa:
         tela.blit(fundo, (0, 0))  # Redesenha o fundo
 
         # Renderiza o título "Escolha seu personagem"
-        texto_titulo = renderizar_com_contorno("Escolha seu personagem", fonte_local_selecao, cor_titulo, (0, 0, 0))
-        tela.blit(texto_titulo, (pos_titulo_x - texto_titulo.get_width() // 2, pos_titulo_y))
+        texto_titulo = renderizar_com_contorno("ESCOLHA SEU PERSONAGEM", pygame.font.Font("recursos/fontes/title_screen.ttf", 35), cor_titulo, (0, 0, 0))
+        tela.blit(texto_titulo, (pos_titulo_x - texto_titulo.get_width() // 2, pos_titulo_y_atualizado))
+
+        # Renderiza as instruções abaixo do título com quebra de linha
+        texto_instrucoes_parte1 = renderizar_com_contorno(
+            "Use as setas do teclado para alterar entre os personagens",
+            fonte_instrucoes,
+            (255, 255, 255),  # Branco
+            (0, 0, 0)  # Contorno preto
+        )
+        texto_instrucoes_parte2 = renderizar_com_contorno(
+            "e aperte ENTER para selecioná-lo.",
+            fonte_instrucoes,
+            (255, 255, 255),  # Branco
+            (0, 0, 0)  # Contorno preto
+        )
+        pos_instrucoes_y = pos_titulo_y_atualizado + texto_titulo.get_height() + 20
+        tela.blit(texto_instrucoes_parte1, (pos_titulo_x - texto_instrucoes_parte1.get_width() // 2, pos_instrucoes_y))
+        tela.blit(texto_instrucoes_parte2, (pos_titulo_x - texto_instrucoes_parte2.get_width() // 2, pos_instrucoes_y + texto_instrucoes_parte1.get_height() + 5))
 
         # Atualiza o frame da animação baseado no tempo
         tempo_atual = pygame.time.get_ticks()
@@ -121,21 +141,6 @@ def exibir_selecao_personagem(tela: pygame.Surface, fundo: pygame.Surface, fonte
 
         pygame.display.flip()
 
-        # Faz a transição suave para o jogo (Fade-Out)
-        if terminou_animacao:
-            # Aguarda um pequeno tempo antes de começar o fade-out (tela preta reduzida em 1 segundo)
-            pygame.time.delay(1000)  # Ajuste reduzindo o tempo da tela preta de 2000 ms para 1000 ms
-
-            for alpha in range(255, -1, -5):  # Passo de opacidade para fade-out
-                overlay = pygame.Surface(tela.get_size())
-                overlay.set_alpha(alpha)
-                overlay.fill((0, 0, 0))
-                tela.blit(overlay, (0, 0))
-                pygame.display.flip()
-                pygame.time.delay(20)
-
-            selecao_ativa = False
-
         # Captura eventos de teclado para navegação e seleção
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -149,6 +154,12 @@ def exibir_selecao_personagem(tela: pygame.Surface, fundo: pygame.Surface, fonte
                         indice_selecionado = (indice_selecionado + 1) % len(personagens)
                     if evento.key == pygame.K_RETURN:
                         personagem_confirmado = True  # Confirma a seleção
+
+        # Finaliza a seleção e encerra o loop quando a animação de seleção terminar
+        if personagem_confirmado and terminou_animacao:
+            pygame.display.flip()
+            time.sleep(1)  # Pausa de 1 segundo antes de prosseguir
+            selecao_ativa = False
 
     # Retorna o nome do personagem escolhido
     return personagens[indice_selecionado]["nome"]
