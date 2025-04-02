@@ -36,14 +36,16 @@ Este projeto foi desenvolvido com os seguintes objetivos:
 ## 📥 Como Baixar e Jogar no PC
 Siga as instruções abaixo para instalar e jogar **Runner's Quest** no seu computador.
 
-### ✅ Etapa 1: Verifique os requisitos
-Antes de começar, verifique se seu computador possui os seguintes itens instalados:
-- **Python** (versão 3.8 ou superior).
-  - Para verificar se você já tem Python instalado, abra o **Prompt de Comando** (Windows) ou **Terminal** (Mac/Linux) e digite:
-    ```bash
-    python --version
-    ```
-  - Se Python não estiver instalado, baixe-o gratuitamente em [python.org](https://www.python.org/) e siga as instruções de instalação para Windows, macOS ou Linux.
+### ✅ Etapa 1: Instalar o Python
+Antes de começar, você precisa ter o **Python** instalado (versão 3.8 ou superior). Para isso:
+1. Acesse o site oficial do Python: [python.org](https://www.python.org/downloads/).
+2. Baixe a versão recomendada para seu sistema operacional (Windows, macOS ou Linux).
+3. No Windows, **durante a instalação**, marque a opção **"Add Python to PATH"** antes de clicar em "Install Now".
+4. Para testar se o Python foi instalado corretamente, abra o **Prompt de Comando** (Windows) ou **Terminal** (Mac/Linux) e digite:
+   ```bash
+   python --version
+   ```
+   Se aparecer algo como `Python 3.x.x`, a instalação foi bem-sucedida.
 
 ### 📥 Etapa 2: Baixe o jogo
 1. Acesse o repositório do jogo no GitHub:
@@ -62,12 +64,12 @@ Agora precisamos instalar a biblioteca **Pygame**, que permite que o jogo rode c
 1. Abra o **Prompt de Comando** (Windows) ou **Terminal** (Mac/Linux).
 2. Digite o seguinte comando e pressione **Enter**:
    ```bash
-   pip install pygame
+   python -m pip install pygame
    ```
 3. Aguarde a instalação ser concluída.
-   - **Se der erro:** Tente usar:
+   - Se der erro informando que `python` não foi encontrado, tente usar `py` no lugar:
      ```bash
-     python -m pip install pygame
+     py -m pip install pygame
      ```
 
 ### 🎮 Etapa 4: Rode o jogo
@@ -84,6 +86,10 @@ Agora precisamos instalar a biblioteca **Pygame**, que permite que o jogo rode c
    ```bash
    python main.py
    ```
+   - Se houver erro informando que `python` não foi encontrado, tente usar `py`:
+     ```bash
+     py main.py
+     ```
 
 > 🎉 **Parabéns!** O jogo será iniciado e você poderá começar a jogar **Runner's Quest**.
 
